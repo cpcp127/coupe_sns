@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "339844752134",
+    "project_id": "couplesns-aeb74",
+    "storage_bucket": "couplesns-aeb74.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:339844752134:android:ea139812435ee5722fb487",
+        "android_client_info": {
+          "package_name": "com.example.couple_sns"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCR50ON6ItKoK7cbTm-yGHk_OLDTkqvyJs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
