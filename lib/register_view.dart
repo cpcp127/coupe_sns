@@ -16,7 +16,7 @@ class RegisterView extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(),
       body: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.max,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -58,6 +58,17 @@ class RegisterView extends StatelessWidget {
                   );
                 },
               )),
+          Consumer<RegisterProvider>(
+            builder: (_, provider, __) {
+              return Visibility(
+                visible: provider.emailValidate == true ? false : true,
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 16),
+                  child: Text('이메일을 확인해주세요'),
+                ),
+              );
+            },
+          ),
           const SizedBox(height: 16),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -83,10 +94,11 @@ class RegisterView extends StatelessWidget {
                       borderRadius: BorderRadius.all(Radius.circular(12.0)),
                     ),
                     focusedBorder: OutlineInputBorder(
-                      borderSide:
-                          BorderSide(color: provider.passwordValidate == true
+                      borderSide: BorderSide(
+                          color: provider.passwordValidate == true
                               ? Colors.blueAccent
-                              : Colors.red, width: 2.0),
+                              : Colors.red,
+                          width: 2.0),
                       borderRadius: BorderRadius.all(Radius.circular(12.0)),
                     ),
                   ),
@@ -94,42 +106,75 @@ class RegisterView extends StatelessWidget {
               },
             ),
           ),
+          Consumer<RegisterProvider>(
+            builder: (_, provider, __) {
+              return Visibility(
+                visible: provider.passwordValidate == true ? false : true,
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 16),
+                  child: Text('비밀번호를 확인해주세요'),
+                ),
+              );
+            },
+          ),
           const SizedBox(height: 16),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: TextFormField(
-              onChanged: (pwdCheck) {
-                registerProvider.setPasswordCheck(pwdCheck);
-              },
-              decoration: const InputDecoration(
-                prefixIcon: Icon(Icons.lock),
-                hintText: '비밀번호 확인',
-                hintStyle: TextStyle(color: Colors.grey),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(12.0)),
+            child: Consumer<RegisterProvider>(builder: (_, provider, __) {
+              return TextFormField(
+                onChanged: (pwdCheck) {
+                  registerProvider.setPasswordCheck(pwdCheck);
+                },
+                decoration: InputDecoration(
+                  prefixIcon: Icon(Icons.lock),
+                  hintText: '비밀번호 확인',
+                  hintStyle: TextStyle(color: Colors.grey),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(12.0)),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                        color: provider.passwordcCheckValidate == true
+                            ? Colors.blueAccent
+                            : Colors.red,
+                        width: 1.0),
+                    borderRadius: BorderRadius.all(Radius.circular(12.0)),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                        color: provider.passwordcCheckValidate == true
+                            ? Colors.blueAccent
+                            : Colors.red,
+                        width: 2.0),
+                    borderRadius: BorderRadius.all(Radius.circular(12.0)),
+                  ),
                 ),
-                enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.blueAccent, width: 1.0),
-                  borderRadius: BorderRadius.all(Radius.circular(12.0)),
+              );
+            }),
+          ),
+          Consumer<RegisterProvider>(
+            builder: (_, provider, __) {
+              return Visibility(
+                visible: provider.passwordcCheckValidate == true ? false : true,
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 16),
+                  child: Text('비밀번호가 일치하지 않습니다'),
                 ),
-                focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.blueAccent, width: 2.0),
-                  borderRadius: BorderRadius.all(Radius.circular(12.0)),
-                ),
-              ),
-            ),
+              );
+            },
           ),
           const SizedBox(height: 20),
           GestureDetector(
             onTap: () {
-              registerProvider.checkInfo(
-                  registerProvider.email, registerProvider.password);
+              registerProvider.registerEmail(context);
             },
-            child: Container(
-              width: 300,
-              height: 50,
-              decoration: const BoxDecoration(color: Colors.red),
-              child: const Text('완료'),
+            child: Center(
+              child: Container(
+                width: 300,
+                height: 50,
+                decoration: const BoxDecoration(color: Colors.deepOrangeAccent),
+                child: Center(child: const Text('완료')),
+              ),
             ),
           )
         ],
