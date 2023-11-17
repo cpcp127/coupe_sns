@@ -7,30 +7,37 @@ class RegisterProvider extends ChangeNotifier {
   int _pageIndex = 0;
   String _email = "";
   bool _emailValidate = true;
+  TextEditingController _emailController = TextEditingController();
+
   String _password = "";
   bool _passwordValidate = true;
+  TextEditingController _pwdController = TextEditingController();
+
   String _passwordCheck = '';
-  bool _passwordcCheckValidate = true;
+  bool _passwordCheckValidate = true;
+  TextEditingController _pwdValidateController = TextEditingController();
+
   String _nickname = "";
   bool _nicknameValidate = true;
+  TextEditingController _nicknameController = TextEditingController();
 
   int get pageIndex => _pageIndex;
 
   String get email => _email;
-
   bool get emailValidate => _emailValidate;
+  TextEditingController get emailController => _emailController;
 
   bool get passwordValidate => _passwordValidate;
-
   String get password => _password;
+  TextEditingController get pwdController => _pwdController;
 
   String get passwordCheck => _passwordCheck;
-
-  bool get passwordcCheckValidate => _passwordcCheckValidate;
+  bool get passwordCheckValidate => _passwordCheckValidate;
+  TextEditingController get pwdValidateController => _pwdValidateController;
 
   String get nickname => _nickname;
-
   bool get nicknameValidate => _nicknameValidate;
+  TextEditingController get nicknameController => _nicknameController;
 
   void setEmail(String input_email) {
     _email = input_email;
@@ -74,11 +81,11 @@ class RegisterProvider extends ChangeNotifier {
       }
 
       if (_password != _passwordCheck) {
-        _passwordcCheckValidate = false;
+        _passwordCheckValidate = false;
       } else {
-        _passwordcCheckValidate = true;
+        _passwordCheckValidate = true;
       }
-      if (_passwordValidate == true && _passwordcCheckValidate == true) {
+      if (_passwordValidate == true && _passwordCheckValidate == true) {
         _pageIndex++;
       }
     } else {
@@ -125,9 +132,9 @@ class RegisterProvider extends ChangeNotifier {
     }
 
     if (_password != _passwordCheck) {
-      _passwordcCheckValidate = false;
+      _passwordCheckValidate = false;
     } else {
-      _passwordcCheckValidate = true;
+      _passwordCheckValidate = true;
     }
     notifyListeners();
   }
@@ -135,14 +142,16 @@ class RegisterProvider extends ChangeNotifier {
   Future<void> registerEmail(context) async {
     try {
       UserCredential userCredential = await FirebaseAuth.instance
-          .createUserWithEmailAndPassword(email: _email, password: _password)
+          .createUserWithEmailAndPassword(email: _email.replaceAll(RegExp('\\s'), ""), password: _password.replaceAll(RegExp('\\s'), ""))
           .then((credentialValue) {
-        FirebaseFirestore.instance.collection('user').doc(_email).set({
-          'email': _email,
+        FirebaseFirestore.instance.collection('user').doc(_email.replaceAll(RegExp('\\s'), "")).set({
+          'email': _email.replaceAll(RegExp('\\s'), ""),
           'nickname': _nickname,
+          'status':'프로필 작성중',
         });
         if (credentialValue.user!.email == null) {
         } else {
+          resetProvider();
           Navigator.pop(context);
           showToast('회원가입 완료! 이메일 인증을 해주세요!');
         }
@@ -165,7 +174,7 @@ class RegisterProvider extends ChangeNotifier {
     _password = "";
     _passwordValidate = true;
     _passwordCheck = '';
-    _passwordcCheckValidate = true;
+    _passwordCheckValidate = true;
     _nickname = "";
     _nicknameValidate = true;
   }

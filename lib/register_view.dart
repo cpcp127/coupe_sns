@@ -28,6 +28,8 @@ class _RegisterViewState extends State<RegisterView> {
               },
               child: Icon(Icons.close)),
           leadingWidth: 56,
+          title: Text('회원가입'),
+          centerTitle: true,
         ),
         bottomSheet: Container(
             height: 80,
@@ -93,6 +95,7 @@ class _RegisterViewState extends State<RegisterView> {
                       onChanged: (email) {
                         provider.setEmail(email);
                       },
+                      controller: provider.emailController,
                       decoration: InputDecoration(
                         prefixIcon: const Icon(Icons.email),
                         hintText: '이메일',
@@ -147,6 +150,7 @@ class _RegisterViewState extends State<RegisterView> {
                       onChanged: (pwd) {
                         provider.setPassword(pwd);
                       },
+                      controller: provider.pwdController,
                       decoration: InputDecoration(
                         prefixIcon: const Icon(Icons.lock),
                         hintText: '비밀번호',
@@ -186,6 +190,7 @@ class _RegisterViewState extends State<RegisterView> {
                       onChanged: (pwdCheck) {
                         provider.setPasswordCheck(pwdCheck);
                       },
+                      controller: provider.pwdValidateController,
                       decoration: InputDecoration(
                         prefixIcon: const Icon(Icons.lock),
                         hintText: '비밀번호 확인',
@@ -195,7 +200,7 @@ class _RegisterViewState extends State<RegisterView> {
                         ),
                         enabledBorder: OutlineInputBorder(
                           borderSide: BorderSide(
-                              color: provider.passwordcCheckValidate == true
+                              color: provider.passwordCheckValidate == true
                                   ? Colors.blueAccent
                                   : Colors.red,
                               width: 1.0),
@@ -204,7 +209,7 @@ class _RegisterViewState extends State<RegisterView> {
                         ),
                         focusedBorder: OutlineInputBorder(
                           borderSide: BorderSide(
-                              color: provider.passwordcCheckValidate == true
+                              color: provider.passwordCheckValidate == true
                                   ? Colors.blueAccent
                                   : Colors.red,
                               width: 2.0),
@@ -214,7 +219,7 @@ class _RegisterViewState extends State<RegisterView> {
                       ),
                     ),
                     Visibility(
-                      visible: provider.passwordcCheckValidate == true
+                      visible: provider.passwordCheckValidate == true
                           ? false
                           : true,
                       child: const Padding(
@@ -240,6 +245,7 @@ class _RegisterViewState extends State<RegisterView> {
                       onChanged: (nick) {
                         provider.setNickName(nick);
                       },
+                      controller: provider.nicknameController,
                       decoration: InputDecoration(
                         prefixIcon: const Icon(Icons.account_circle_rounded),
                         hintText: '닉네임',
